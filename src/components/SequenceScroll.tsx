@@ -43,13 +43,13 @@ export default function SequenceScroll({
   // Animated transform proxy for 3D Logo (manipulated by GSAP timeline)
   const logoTransformRef = useRef({
     x: 0,
-    y: -4.8,
+    y: 0.35,
     z: 0,
-    rotX: 0.45,
-    rotY: -Math.PI * 2,
-    rotZ: -0.2,
-    scale: 1.1,
-    opacity: 0,
+    rotX: 0.1,
+    rotY: 0,
+    rotZ: 0,
+    scale: 1.4,
+    opacity: 1,
   });
 
   // Refs for the 4 Apple-style floating text stages
@@ -437,6 +437,69 @@ export default function SequenceScroll({
     };
     updateResponsiveScale();
 
+    // Instant Procedural 3D Garindo Delta Emblem (renders immediately while GLB loads)
+    const createProceduralEmblem = () => {
+      const group = new THREE.Group();
+
+      const shape = new THREE.Shape();
+      const s = 0.95;
+      shape.moveTo(0, s * 0.95);
+      shape.lineTo(s * 0.85, -s * 0.55);
+      shape.lineTo(-s * 0.85, -s * 0.55);
+      shape.closePath();
+
+      const hole = new THREE.Path();
+      const hs = 0.44;
+      hole.moveTo(0, hs * 0.72);
+      hole.lineTo(-hs * 0.75, -hs * 0.45);
+      hole.lineTo(hs * 0.75, -hs * 0.45);
+      hole.closePath();
+      shape.holes.push(hole);
+
+      const extrudeSettings = {
+        steps: 1,
+        depth: 0.28,
+        bevelEnabled: true,
+        bevelThickness: 0.08,
+        bevelSize: 0.06,
+        bevelOffset: 0,
+        bevelSegments: 4,
+      };
+
+      const geom = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      geom.center();
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0xd9381e,
+        roughness: 0.22,
+        metalness: 0.85,
+        transparent: true,
+        depthWrite: true,
+        side: THREE.DoubleSide,
+      });
+
+      const mesh = new THREE.Mesh(geom, mat);
+      group.add(mesh);
+
+      const innerGeom = new THREE.ConeGeometry(0.32, 0.52, 3);
+      innerGeom.rotateX(Math.PI);
+      const innerMat = new THREE.MeshStandardMaterial({
+        color: 0xff7a29,
+        roughness: 0.18,
+        metalness: 0.9,
+        transparent: true,
+        depthWrite: true,
+      });
+      const innerMesh = new THREE.Mesh(innerGeom, innerMat);
+      innerMesh.position.z = 0.04;
+      group.add(innerMesh);
+
+      return group;
+    };
+
+    const fallbackMesh = createProceduralEmblem();
+    logoGroup.add(fallbackMesh);
+
     // Load Garindo 3D Logo GLTF
     const loader = new GLTFLoader();
     let isCancelled = false;
@@ -473,10 +536,14 @@ export default function SequenceScroll({
           }
         });
 
+        // Seamlessly replace procedural fallback with high-poly textured GLB model
+        logoGroup.remove(fallbackMesh);
         logoGroup.add(model);
       },
       undefined,
-      (err) => console.error("Error loading Garindo 3D logo:", err)
+      (err) => {
+        console.warn("Using procedural 3D Garindo emblem fallback:", err);
+      }
     );
 
     let lastThreeW = width;
@@ -618,26 +685,16 @@ export default function SequenceScroll({
         );
       }
 
-      // 1) 3D Logo Transition:
-      tl.to(
-        logoTransformRef.current,
-        {
-          opacity: 1,
-          duration: 2.5,
-          ease: "power1.out",
-        },
-        0
-      );
-
+      // 1) 3D Logo Transition (Starts immediately visible at 0%, rotates 360 & scales on scroll):
       tl.to(
         logoTransformRef.current,
         {
           y: 0.0,
           rotX: 0,
-          rotY: 0,
+          rotY: Math.PI * 2,
           rotZ: 0,
-          scale: 3.15,
-          duration: 11,
+          scale: 3.2,
+          duration: 10,
           ease: "power2.out",
         },
         0
@@ -652,21 +709,21 @@ export default function SequenceScroll({
             duration: 5,
             ease: "power2.in",
           },
-          6
+          5
         );
       }
 
       tl.to(
         logoTransformRef.current,
         {
-          z: 4.8,
-          scale: 9.0,
+          z: 5.0,
+          scale: 9.5,
           rotX: -0.08,
           opacity: 0,
           duration: 7,
           ease: "power2.in",
         },
-        11
+        10
       );
 
       if (canvasRef.current) {
