@@ -41,12 +41,14 @@ export default function SequenceScroll({
   const scrollProgressRef = useRef<number>(0);
 
   // Animated transform proxy for 3D Logo (manipulated by GSAP timeline)
+  // Starts completely hidden below the viewport (y: -5.2, opacity: 0)
+  // ONLY emerges and spins up from the bottom when user scrolls down!
   const logoTransformRef = useRef({
     x: 0,
-    y: -4.8,
+    y: -5.2,
     z: 0,
     rotX: 0.35,
-    rotY: -Math.PI * 2,
+    rotY: -Math.PI * 2.5,
     rotZ: -0.15,
     scale: 1.1,
     opacity: 0,
