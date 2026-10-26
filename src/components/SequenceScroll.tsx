@@ -43,13 +43,13 @@ export default function SequenceScroll({
   // Animated transform proxy for 3D Logo (manipulated by GSAP timeline)
   const logoTransformRef = useRef({
     x: 0,
-    y: 0.35,
+    y: -4.8,
     z: 0,
-    rotX: 0.1,
-    rotY: 0,
-    rotZ: 0,
-    scale: 1.4,
-    opacity: 1,
+    rotX: 0.35,
+    rotY: -Math.PI * 2,
+    rotZ: -0.15,
+    scale: 1.1,
+    opacity: 0,
   });
 
   // Refs for the 4 Apple-style floating text stages
@@ -685,21 +685,34 @@ export default function SequenceScroll({
         );
       }
 
-      // 1) 3D Logo Transition (Starts immediately visible at 0%, rotates 360 & scales on scroll):
+      // 1) 3D Logo Transition (Emerged majestically from below on scroll):
+      //    a. (0% -> 2.5%): Fade in opacity as it rises from below
+      tl.to(
+        logoTransformRef.current,
+        {
+          opacity: 1,
+          duration: 2.5,
+          ease: "power1.out",
+        },
+        0
+      );
+
+      //    b. (0% -> 11%): Rise up from below (y: -4.8 -> 0.0), rotate 360 in 3D, scale up to cover "CV.GARINDO"
       tl.to(
         logoTransformRef.current,
         {
           y: 0.0,
           rotX: 0,
-          rotY: Math.PI * 2,
+          rotY: 0,
           rotZ: 0,
-          scale: 3.2,
-          duration: 10,
+          scale: 3.15,
+          duration: 11,
           ease: "power2.out",
         },
         0
       );
 
+      //    c. (6% -> 11%): "CV.GARINDO" text fades and shrinks behind the covering 3D emblem
       if (stage1Ref.current) {
         tl.to(
           stage1Ref.current,
@@ -709,10 +722,11 @@ export default function SequenceScroll({
             duration: 5,
             ease: "power2.in",
           },
-          5
+          6
         );
       }
 
+      //    d. (11% -> 18%): Logo zooms forward into camera lens and dissolves into image sequence
       tl.to(
         logoTransformRef.current,
         {
@@ -723,7 +737,7 @@ export default function SequenceScroll({
           duration: 7,
           ease: "power2.in",
         },
-        10
+        11
       );
 
       if (canvasRef.current) {
