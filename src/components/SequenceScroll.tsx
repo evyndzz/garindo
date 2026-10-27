@@ -610,8 +610,9 @@ export default function SequenceScroll({
           start: "top top",
           end: isMobileView ? "+=350%" : "+=450%",
           pin: true,
-          scrub: isMobileView ? 0.25 : 0.4,
-          anticipatePin: 1,
+          pinType: "fixed",
+          anticipatePin: 0,
+          scrub: isMobileView ? true : 0.4,
           onUpdate: (self) => {
             scrollProgressRef.current = self.progress;
             if (progressBarFillRef.current) {
@@ -772,10 +773,10 @@ export default function SequenceScroll({
 
   return (
     <section id="hero-sequence" className="relative bg-black select-none">
-      {/* Pinned Fullscreen Stage (h-svh on mobile prevents URL bar resize jumps) */}
+      {/* Pinned Fullscreen Stage */}
       <div
         ref={triggerRef}
-        className="relative h-svh sm:h-screen w-full overflow-hidden bg-black"
+        className="relative h-screen w-full overflow-hidden bg-black"
       >
         {/* Fullscreen Canvas for 240-frame Image Sequence */}
         <canvas
