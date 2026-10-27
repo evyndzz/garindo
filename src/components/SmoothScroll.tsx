@@ -14,13 +14,27 @@ export default function SmoothScroll({
     if (typeof window === "undefined") return;
 
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    // Detect touch / mobile devices:
+    // Mobile browsers (iOS Safari, Android Chrome) have native hardware momentum scrolling.
+    // Running Lenis on touch devices causes a scroll tug-of-war ("tertarik ke atas/bawah") and rubber-banding.
+    const isTouchDevice =
+      window.innerWidth < 1024 ||
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia("(pointer: coarse)").matches;
+
+    if (isTouchDevice) {
+      return;
+    }
 
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 1,
+      touchMultiplier: 0,
       syncTouch: false,
     });
 
@@ -31,7 +45,7 @@ export default function SmoothScroll({
     };
 
     gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
 
     return () => {
       gsap.ticker.remove(update);

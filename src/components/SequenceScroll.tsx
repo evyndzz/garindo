@@ -21,7 +21,7 @@ export default function SequenceScroll({
   onLoadedComplete,
   onModelLoaded,
 }: SequenceScrollProps) {
-  const triggerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef<number>(0);
@@ -526,12 +526,8 @@ export default function SequenceScroll({
 
         logoGroupRef.current.visible = t.opacity > 0.002;
 
-        const idleWeight = Math.max(0, 1 - p * 15) * (t.opacity > 0.5 ? 1 : 0);
-        const idleY = Math.sin(Date.now() * 0.002) * 0.05 * idleWeight;
-        const idleRot = Math.sin(Date.now() * 0.0015) * 0.04 * idleWeight;
-
-        logoGroupRef.current.position.set(t.x, t.y + idleY, t.z);
-        logoGroupRef.current.rotation.set(t.rotX, t.rotY + idleRot, t.rotZ);
+        logoGroupRef.current.position.set(t.x, t.y, t.z);
+        logoGroupRef.current.rotation.set(t.rotX, t.rotY, t.rotZ);
         logoGroupRef.current.scale.setScalar(
           t.scale * responsiveScaleRef.current
         );
@@ -608,9 +604,8 @@ export default function SequenceScroll({
         scrollTrigger: {
           trigger: triggerRef.current,
           start: "top top",
-          end: isMobileView ? "+=350%" : "+=450%",
+          end: isMobileView ? "+=320%" : "+=450%",
           pin: true,
-          pinType: "fixed",
           anticipatePin: 0,
           scrub: isMobileView ? true : 0.4,
           onUpdate: (self) => {
@@ -772,17 +767,16 @@ export default function SequenceScroll({
   }, [drawFrame]);
 
   return (
-    <section id="hero-sequence" className="relative bg-black select-none">
-      {/* Pinned Fullscreen Stage */}
-      <div
-        ref={triggerRef}
-        className="relative h-screen w-full overflow-hidden bg-black"
-      >
-        {/* Fullscreen Canvas for 240-frame Image Sequence */}
-        <canvas
-          ref={canvasRef}
-          className="invisible opacity-0 block w-full h-full"
-        />
+    <section
+      ref={triggerRef}
+      id="hero-sequence"
+      className="relative h-screen w-full overflow-hidden bg-black select-none"
+    >
+      {/* Fullscreen Canvas for 240-frame Image Sequence */}
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none absolute inset-0 block w-full h-full invisible opacity-0"
+      />
 
         {/* Fullscreen WebGL Canvas for 3D Emblem Transition */}
         <canvas
@@ -915,7 +909,6 @@ export default function SequenceScroll({
             />
           </div>
         </div>
-      </div>
     </section>
   );
 }
