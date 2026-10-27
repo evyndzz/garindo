@@ -6,10 +6,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 interface SequenceScrollProps {
   onProgressUpdate?: (loadedPercent: number) => void;
   onLoadedComplete?: () => void;
+  onModelLoaded?: () => void;
 }
 
 const TOTAL_FRAMES = 240;
@@ -17,6 +19,7 @@ const TOTAL_FRAMES = 240;
 export default function SequenceScroll({
   onProgressUpdate,
   onLoadedComplete,
+  onModelLoaded,
 }: SequenceScrollProps) {
   const triggerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -398,18 +401,24 @@ export default function SequenceScroll({
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.15;
     threeRendererRef.current = renderer;
 
-    // Rich studio lighting for crimson & metallic gold emblem
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+    // Studio Environment Map for realistic metallic & specular reflections (prevents flat polymer look)
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    pmremGenerator.compileEquirectangularShader();
+    const roomEnv = new RoomEnvironment();
+    scene.environment = pmremGenerator.fromScene(roomEnv, 0.04).texture;
+
+    // Balanced studio rim & directional lighting with high specular contrast
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.8);
     keyLight.position.set(4, 6, 5);
     scene.add(keyLight);
 
-    const redRimLight = new THREE.DirectionalLight(0xd9383a, 2.8);
+    const redRimLight = new THREE.DirectionalLight(0xd9383a, 2.6);
     redRimLight.position.set(-6, 0, 3);
     scene.add(redRimLight);
 
@@ -439,70 +448,7 @@ export default function SequenceScroll({
     };
     updateResponsiveScale();
 
-    // Instant Procedural 3D Garindo Delta Emblem (renders immediately while GLB loads)
-    const createProceduralEmblem = () => {
-      const group = new THREE.Group();
-
-      const shape = new THREE.Shape();
-      const s = 0.95;
-      shape.moveTo(0, s * 0.95);
-      shape.lineTo(s * 0.85, -s * 0.55);
-      shape.lineTo(-s * 0.85, -s * 0.55);
-      shape.closePath();
-
-      const hole = new THREE.Path();
-      const hs = 0.44;
-      hole.moveTo(0, hs * 0.72);
-      hole.lineTo(-hs * 0.75, -hs * 0.45);
-      hole.lineTo(hs * 0.75, -hs * 0.45);
-      hole.closePath();
-      shape.holes.push(hole);
-
-      const extrudeSettings = {
-        steps: 1,
-        depth: 0.28,
-        bevelEnabled: true,
-        bevelThickness: 0.08,
-        bevelSize: 0.06,
-        bevelOffset: 0,
-        bevelSegments: 4,
-      };
-
-      const geom = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-      geom.center();
-
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0xd9381e,
-        roughness: 0.22,
-        metalness: 0.85,
-        transparent: true,
-        depthWrite: true,
-        side: THREE.DoubleSide,
-      });
-
-      const mesh = new THREE.Mesh(geom, mat);
-      group.add(mesh);
-
-      const innerGeom = new THREE.ConeGeometry(0.32, 0.52, 3);
-      innerGeom.rotateX(Math.PI);
-      const innerMat = new THREE.MeshStandardMaterial({
-        color: 0xff7a29,
-        roughness: 0.18,
-        metalness: 0.9,
-        transparent: true,
-        depthWrite: true,
-      });
-      const innerMesh = new THREE.Mesh(innerGeom, innerMat);
-      innerMesh.position.z = 0.04;
-      group.add(innerMesh);
-
-      return group;
-    };
-
-    const fallbackMesh = createProceduralEmblem();
-    logoGroup.add(fallbackMesh);
-
-    // Load Garindo 3D Logo GLTF
+    // Load High-Fidelity Garindo 3D Logo GLTF
     const loader = new GLTFLoader();
     let isCancelled = false;
 
@@ -519,6 +465,8 @@ export default function SequenceScroll({
         model.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             const mesh = child as THREE.Mesh;
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
             if (mesh.material) {
               const mats = Array.isArray(mesh.material)
                 ? mesh.material
@@ -527,24 +475,22 @@ export default function SequenceScroll({
                 m.transparent = true;
                 m.depthWrite = true;
                 m.side = THREE.DoubleSide;
-                if ("roughness" in m && typeof m.roughness === "number") {
-                  m.roughness = Math.max(0.2, m.roughness * 0.85);
+                // Boost reflection intensity with the environment map
+                if ("envMapIntensity" in m) {
+                  m.envMapIntensity = 1.6;
                 }
-                if ("metalness" in m && typeof m.metalness === "number") {
-                  m.metalness = Math.min(0.95, Math.max(0.4, m.metalness));
-                }
+                m.needsUpdate = true;
               });
             }
           }
         });
 
-        // Seamlessly replace procedural fallback with high-poly textured GLB model
-        logoGroup.remove(fallbackMesh);
         logoGroup.add(model);
+        if (onModelLoaded) onModelLoaded();
       },
       undefined,
       (err) => {
-        console.warn("Using procedural 3D Garindo emblem fallback:", err);
+        console.error("Error loading Garindo 3D logo:", err);
       }
     );
 
@@ -614,6 +560,8 @@ export default function SequenceScroll({
       isCancelled = true;
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleThreeResize);
+      pmremGenerator.dispose();
+      roomEnv.dispose();
       renderer.dispose();
       scene.clear();
     };

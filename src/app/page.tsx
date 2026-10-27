@@ -15,14 +15,25 @@ import Footer from "@/components/Footer";
 export default function Home() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [isImagesLoaded, setIsImagesLoaded] = useState(false);
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [preloaderDone, setPreloaderDone] = useState(false);
+
+  // Safety fallback: ensure site is never blocked if network is very slow
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsModelLoaded(true);
+    }, 3800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const isAllLoaded = isImagesLoaded && isModelLoaded;
 
   return (
     <SmoothScroll>
       {!preloaderDone && (
         <Preloader
           progress={loadProgress}
-          isLoaded={isImagesLoaded}
+          isLoaded={isAllLoaded}
           onFinished={() => setPreloaderDone(true)}
         />
       )}
@@ -34,6 +45,7 @@ export default function Home() {
         <SequenceScroll
           onProgressUpdate={(percent) => setLoadProgress(percent)}
           onLoadedComplete={() => setIsImagesLoaded(true)}
+          onModelLoaded={() => setIsModelLoaded(true)}
         />
 
         {/* Subsequent White-Mode Landing Page Sections with Garindo Brand Signature */}
