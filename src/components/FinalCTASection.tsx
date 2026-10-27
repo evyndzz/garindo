@@ -70,11 +70,16 @@ Mohon informasi daftar harga distributor dan jadwal pengiriman terdekat.`;
             <div className="pt-6 border-t border-black/[0.08] space-y-3 text-sm text-[#6E6E73]">
               <div>
                 <span className="block text-[#1D1D1F] font-semibold">
-                  Gudang Utama Palu Barat
+                  CV. Garindo Cab. Palu
                 </span>
-                <span>
-                  Jl. Trans Sulawesi KM 7, Kota Palu, Sulawesi Tengah 94227
-                </span>
+                <a
+                  href="https://maps.google.com/?q=Jl.+Sungai+Lariang+No.23,+Ujuna,+Kec.+Palu+Bar.,+Kota+Palu,+Sulawesi+Tengah+94111"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#F56300] transition-colors block leading-relaxed"
+                >
+                  Jl. Sungai Lariang No.23, Ujuna, Kec. Palu Bar., Kota Palu, Sulawesi Tengah 94111
+                </a>
               </div>
               <div>
                 <span className="block text-[#1D1D1F] font-semibold">

@@ -17,9 +17,9 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "CV. Garindo — Distribusi Sembako & Bahan Bangunan Sulawesi Tengah",
+  title: "CV. Garindo Cab. Palu — Distribusi Sembako & Bahan Bangunan Sulawesi Tengah",
   description:
-    "Pilar utama rantai pasok Sulawesi Tengah. Distributor skala besar komoditas sembako dan material konstruksi di Palu dengan jangkauan 13 kabupaten dan kota.",
+    "CV. Garindo Cab. Palu, Jl. Sungai Lariang No.23, Ujuna, Kec. Palu Barat, Kota Palu, Sulawesi Tengah 94111. Distributor skala besar komoditas sembako dan material konstruksi dengan jangkauan 13 kabupaten dan kota.",
 };
 
 export const viewport: Viewport = {

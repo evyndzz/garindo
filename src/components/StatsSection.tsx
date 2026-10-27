@@ -179,7 +179,7 @@ export default function StatsSection() {
                 Matriks Rute &amp; Estimasi Serah-Terima (SLA)
               </h3>
               <p className="mt-1 text-xs sm:text-sm text-[#6E6E73]">
-                Titik Keberangkatan: Kompleks Pergudangan CV. Garindo Palu Barat
+                Titik Keberangkatan: CV. Garindo Cab. Palu (Jl. Sungai Lariang No.23, Ujuna, Palu Barat)
               </p>
             </div>
 

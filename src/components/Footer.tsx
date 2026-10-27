@@ -11,11 +11,21 @@ export default function Footer() {
           <div className="sm:col-span-2 space-y-3">
             <Logo size="sm" theme="light" />
             <p className="leading-relaxed max-w-sm mt-2 text-[#6E6E73]">
-              Distributor skala besar komoditas sembako dan material bangunan di Sulawesi Tengah. Beroperasi dari Kompleks Pergudangan Palu Barat, Kota Palu.
+              Distributor skala besar komoditas sembako dan material bangunan di Sulawesi Tengah.
             </p>
-            <p className="text-[#1D1D1F] font-medium">
-              Jl. Trans Sulawesi KM 7, Palu Barat, Kota Palu 94227
-            </p>
+            <div className="pt-1">
+              <p className="text-[#1D1D1F] font-semibold">
+                CV. Garindo Cab. Palu
+              </p>
+              <a
+                href="https://maps.google.com/?q=Jl.+Sungai+Lariang+No.23,+Ujuna,+Kec.+Palu+Bar.,+Kota+Palu,+Sulawesi+Tengah+94111"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#6E6E73] hover:text-[#F56300] transition-colors leading-relaxed block mt-1"
+              >
+                Jl. Sungai Lariang No.23, Ujuna, Kec. Palu Bar., Kota Palu, Sulawesi Tengah 94111
+              </a>
+            </div>
           </div>
 
           <div className="space-y-2.5">

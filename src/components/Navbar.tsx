@@ -256,11 +256,16 @@ export default function Navbar() {
                       isLightMode ? "text-[#1D1D1F]" : "text-[#F5F5F7]"
                     }`}
                   >
-                    Kompleks Pergudangan CV. Garindo
+                    CV. Garindo Cab. Palu
                   </p>
-                  <p className="mt-1">
-                    Jl. Trans Sulawesi KM 7, Palu Barat, Kota Palu, Sulawesi Tengah 94227
-                  </p>
+                  <a
+                    href="https://maps.google.com/?q=Jl.+Sungai+Lariang+No.23,+Ujuna,+Kec.+Palu+Bar.,+Kota+Palu,+Sulawesi+Tengah+94111"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 block hover:text-[#F56300] transition-colors leading-relaxed"
+                  >
+                    Jl. Sungai Lariang No.23, Ujuna, Kec. Palu Bar., Kota Palu, Sulawesi Tengah 94111
+                  </a>
                 </div>
                 <div>
                   <p
