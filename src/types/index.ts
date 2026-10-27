@@ -1,7 +1,7 @@
 export interface CommodityItem {
   id: string;
   name: string;
-  category: "sembako" | "bahan-bangunan" | "konsolidasi";
+  category: "sembako" | "bahan-bangunan" | "kebutuhan-harian";
   subCategory?: string;
   brand: string;
   tagline: string;

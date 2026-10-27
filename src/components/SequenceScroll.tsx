@@ -872,7 +872,7 @@ export default function SequenceScroll({
             Pasokan pasti untuk bisnis Anda.
           </h2>
           <p className="mt-2 text-xs sm:text-xl font-medium text-[#A1A1A6] sm:text-[#86868B] tracking-tight max-w-md sm:max-w-none leading-relaxed">
-            Semen Conch, Terigu Jawara, Bola Salju, Gula Bola Merah, dan Minyak Rose Brand.
+            Semen Conch, Semen Tonasa, Terigu Jawara, Bola Salju, Gula Bola Merah, dan Sofita Tissue.
           </p>
 
           <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-5">

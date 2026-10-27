@@ -56,7 +56,7 @@ const PILLARS = [
   {
     number: "01",
     title: "Prinsipal tangan pertama.",
-    body: "Alokasi langsung dari pabrik nasional untuk Semen Conch, Terigu Jawara, Bola Salju, Gula Bola Merah, dan Minyak Rose Brand dengan jaminan keaslian dan harga pabrik.",
+    body: "Alokasi langsung dari pabrik nasional untuk Semen Conch, Semen Tonasa, Terigu Jawara, Bola Salju, Gula Bola Merah, dan Sofita Tissue dengan jaminan keaslian dan harga pabrik.",
   },
   {
     number: "02",

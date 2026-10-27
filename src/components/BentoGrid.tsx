@@ -93,12 +93,12 @@ function ProductCard({
       {/* Product Image Stage */}
       <div
         onClick={() => onOpenSpecs(item)}
-        className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden bg-[#F6F6F8] border border-black/[0.04] flex items-center justify-center p-3 cursor-pointer"
+        className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden bg-[#F6F6F8] border border-black/[0.04] flex items-center justify-center p-4 cursor-pointer"
       >
         <img
           src={item.image}
           alt={item.name}
-          className="w-full h-full object-cover object-center rounded-xl group-hover:scale-105 transition-transform duration-500 ease-out"
+          className="w-full h-full object-contain object-center rounded-xl group-hover:scale-105 transition-transform duration-500 ease-out"
           loading="lazy"
         />
       </div>
@@ -196,11 +196,11 @@ function DatasheetModal({
 
         {/* Image & Description */}
         <div className="my-5 grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-2xl bg-[#F7F7F8] border border-black/[0.06]">
-          <div className="sm:col-span-1 h-36 rounded-xl overflow-hidden">
+          <div className="sm:col-span-1 h-36 rounded-xl overflow-hidden bg-white border border-black/[0.04] flex items-center justify-center p-2">
             <img
               src={item.image}
               alt={item.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
           <div className="sm:col-span-2 flex flex-col justify-center">
@@ -286,7 +286,7 @@ function DatasheetModal({
 export default function BentoGrid() {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeCategory, setActiveCategory] = useState<
-    "all" | "sembako" | "bahan-bangunan" | "konsolidasi"
+    "all" | "sembako" | "bahan-bangunan" | "kebutuhan-harian"
   >("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<CommodityItem | null>(null);
@@ -305,7 +305,7 @@ export default function BentoGrid() {
       all: COMMODITIES_DATA.length,
       "bahan-bangunan": COMMODITIES_DATA.filter((i) => i.category === "bahan-bangunan").length,
       sembako: COMMODITIES_DATA.filter((i) => i.category === "sembako").length,
-      konsolidasi: COMMODITIES_DATA.filter((i) => i.category === "konsolidasi").length,
+      "kebutuhan-harian": COMMODITIES_DATA.filter((i) => i.category === "kebutuhan-harian").length,
     };
   }, []);
 
@@ -349,7 +349,7 @@ export default function BentoGrid() {
               Pilihan Komoditas &amp; Pasokan Terpadu.
             </h2>
             <p className="mt-3 text-sm sm:text-base text-[#6E6E73] leading-relaxed">
-              Pasokan tangan pertama semen, baja tulangan, tepung terigu, minyak goreng, dan paket konsolidasi armada langsung dari gudang distribusi Palu Barat.
+              Pasokan tangan pertama semen konstruksi, tepung terigu, gula pasir kristal, dan kebutuhan harian langsung dari gudang distribusi Palu Barat.
             </p>
           </div>
 
@@ -375,7 +375,7 @@ export default function BentoGrid() {
               { id: "all", label: "Semua Produk" },
               { id: "bahan-bangunan", label: "Bahan Bangunan" },
               { id: "sembako", label: "Divisi Sembako" },
-              { id: "konsolidasi", label: "Konsolidasi Tronton" },
+              { id: "kebutuhan-harian", label: "Kebutuhan Harian" },
             ].map((tab) => {
               const active = activeCategory === tab.id;
               const count = categoryCounts[tab.id as keyof typeof categoryCounts];
@@ -385,7 +385,7 @@ export default function BentoGrid() {
                   type="button"
                   onClick={() =>
                     setActiveCategory(
-                      tab.id as "all" | "sembako" | "bahan-bangunan" | "konsolidasi"
+                      tab.id as "all" | "sembako" | "bahan-bangunan" | "kebutuhan-harian"
                     )
                   }
                   className={`relative shrink-0 whitespace-nowrap px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${

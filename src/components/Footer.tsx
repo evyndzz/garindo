@@ -19,21 +19,21 @@ export default function Footer() {
           </div>
 
           <div className="space-y-2.5">
-            <div className="font-semibold text-[#1D1D1F]">Divisi Sembako</div>
+            <div className="font-semibold text-[#1D1D1F]">Divisi Sembako &amp; Kebutuhan Harian</div>
             <ul className="space-y-2 text-[#6E6E73]">
               <li>Tepung Terigu Jawara</li>
               <li>Tepung Terigu Bola Salju</li>
-              <li>Gula Kristal Bola Merah</li>
-              <li>Minyak Goreng Rose Brand</li>
+              <li>Gula Pasir Bola Merah</li>
+              <li>Sofita Tissue</li>
             </ul>
           </div>
 
           <div className="space-y-2.5">
             <div className="font-semibold text-[#1D1D1F]">Bahan Bangunan</div>
             <ul className="space-y-2 text-[#6E6E73]">
-              <li>Semen Conch PCC</li>
-              <li>Baja Ringan Galvalum</li>
-              <li>Besi Beton Ulir &amp; Polos SNI</li>
+              <li>Semen Conch PCC 50kg</li>
+              <li>Semen Tonasa 50kg</li>
+              <li>Layanan Tronton Proyek</li>
               <li>Pengiriman 13 Kabupaten</li>
             </ul>
           </div>
