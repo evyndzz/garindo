@@ -15,7 +15,6 @@ import {
   Sparkles,
   Search,
   X,
-  FileText,
   Clock,
   MapPin,
   ShieldCheck,
@@ -27,13 +26,12 @@ import { CommodityItem } from "@/types";
 interface ProductCardProps {
   item: CommodityItem;
   index: number;
-  onOpenSpecs: (item: CommodityItem) => void;
+  onOpenSpecs?: (item: CommodityItem) => void;
 }
 
 function ProductCard({
   item,
   index,
-  onOpenSpecs,
 }: ProductCardProps) {
   const cardRef = useRef<HTMLElement>(null);
 
@@ -91,49 +89,34 @@ function ProductCard({
       />
 
       {/* Product Image Stage */}
-      <div
-        onClick={() => onOpenSpecs(item)}
-        className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden bg-[#F6F6F8] border border-black/[0.04] flex items-center justify-center p-4 cursor-pointer"
-      >
+      <div className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden bg-[#F6F6F8] border border-black/[0.04] flex items-center justify-center p-4">
         <img
           src={item.image}
           alt={item.name}
-          className="w-full h-full object-contain object-center rounded-xl group-hover:scale-105 transition-transform duration-500 ease-out"
+          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 ease-out"
           loading="lazy"
         />
       </div>
 
       {/* Product Title */}
       <div className="mt-5 mb-6">
-        <h3
-          onClick={() => onOpenSpecs(item)}
-          className="text-xl sm:text-2xl font-bold text-[#1D1D1F] tracking-tight leading-snug hover:text-[#F56300] transition-colors cursor-pointer"
-        >
+        <h3 className="text-xl sm:text-2xl font-bold text-[#1D1D1F] tracking-tight leading-snug hover:text-[#F56300] transition-colors">
           {item.name}
         </h3>
       </div>
 
       {/* Action Buttons */}
-      <div className="pt-4 border-t border-black/[0.06] flex items-center gap-2.5">
-        <button
-          type="button"
-          onClick={() => onOpenSpecs(item)}
-          className="flex-1 py-2.5 px-3 rounded-xl border border-black/[0.12] hover:border-black/30 bg-white hover:bg-neutral-50 text-[#1D1D1F] text-xs font-semibold text-center transition-colors cursor-pointer flex items-center justify-center gap-1.5"
-        >
-          <FileText className="w-3.5 h-3.5 text-[#6E6E73]" />
-          <span>Detail Spek</span>
-        </button>
-
+      <div className="pt-4 border-t border-black/[0.06]">
         <a
           href={`https://wa.me/628114567890?text=${encodeURIComponent(
             `Halo CV. Garindo Palu, saya ingin menanyakan pemesanan untuk komoditas ${item.name}.`
           )}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#FF7A29] via-[#F56300] to-[#D9381E] hover:brightness-110 text-white text-xs font-semibold text-center shadow-sm shadow-[#F56300]/25 transition-transform active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+          className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#FF7A29] via-[#F56300] to-[#D9381E] hover:brightness-110 text-white text-xs sm:text-sm font-semibold text-center shadow-sm shadow-[#F56300]/25 transition-transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
         >
           <span>Pesan Sekarang</span>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-4 h-4" />
         </a>
       </div>
     </motion.article>
